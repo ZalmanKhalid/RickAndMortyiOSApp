@@ -16,6 +16,17 @@ class RMCharacterViewController: UIViewController {
         // Do any additional setup after loading the view.
         title = "Character"
         self.navigationItem.largeTitleDisplayMode = .automatic
+                
+        let request = RMRequest(
+            endPoint: .character,
+            queryParameters: [
+                URLQueryItem(name: "name", value: "rick"),
+                URLQueryItem(name: "status", value: "alive")
+            ]
+        )
+        
+        print(request.url)
+        
     }
     
 
