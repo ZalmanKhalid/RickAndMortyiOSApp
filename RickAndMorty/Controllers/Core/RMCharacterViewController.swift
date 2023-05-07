@@ -10,7 +10,7 @@ import UIKit
 /// controller to and sreach for characters
 class RMCharacterViewController: UIViewController {
 
-    private let characterListView = CharacterListView()
+    private let characterListView = RMCharacterListView()
     
     override func viewDidLoad() {
         super.viewDidLoad()

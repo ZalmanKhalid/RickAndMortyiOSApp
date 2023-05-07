@@ -8,7 +8,7 @@
 import Foundation
 import UIKit
 
-final class CharacterListViewViewModel: NSObject {
+final class RMCharacterListViewViewModel: NSObject {
     
     func fectchCharacters(){
         RMService.shared.execute(.listCharactersRequest, expecting: RMGetAllCharacterResponse.self) { result in
@@ -24,7 +24,8 @@ final class CharacterListViewViewModel: NSObject {
     
 }
 
-extension CharacterListViewViewModel: UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
+// i personally like this following to be a part of controller 
+extension RMCharacterListViewViewModel: UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
     
 
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -32,8 +33,14 @@ extension CharacterListViewViewModel: UICollectionViewDataSource, UICollectionVi
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "celll", for: indexPath)
-        cell.backgroundColor = .systemGreen
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: RMCharacterCollectionViewCell.cellIdentifier, for: indexPath) as? RMCharacterCollectionViewCell else {
+            fatalError("unSupportedCell")
+        }
+        let imgUrl = URL(string: "https://rickandmortyapi.com/api/character/avatar/11.jpeg")
+        let viewModel = RMCharacterCollectionViewCellViewModel( characterName: "zalman",
+                                                                characterStatus: .alive,
+                                                                characterImageUrl: imgUrl)
+        cell.config(with: viewModel)
         return cell
     }
     
