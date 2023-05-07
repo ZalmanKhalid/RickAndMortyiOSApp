@@ -10,12 +10,22 @@ import UIKit
 /// controller to and sreach for characters
 class RMCharacterViewController: UIViewController {
 
+    private let characterListView = CharacterListView()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
         title = "Character"
         self.navigationItem.largeTitleDisplayMode = .automatic
+        
+        self.view.addSubview(characterListView)
+        NSLayoutConstraint.activate([
+            characterListView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            characterListView.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor),
+            characterListView.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor),
+            characterListView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
+        ])
           
         /*
         let request = RMRequest(
@@ -37,16 +47,6 @@ class RMCharacterViewController: UIViewController {
             }
         }
         */
-        
-        RMService.shared.execute(.listCharactersRequest, expecting: RMGetAllCharacterResponse.self) { result in
-            switch result {
-            case .success(let model):
-                print(String(describing: model))
-                print(model.info.count)
-            case .failure(let error):
-                print(String(describing: error))
-            }
-        }
         
     }
     
