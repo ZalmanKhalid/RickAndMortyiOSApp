@@ -16,7 +16,8 @@ class RMCharacterViewController: UIViewController {
         // Do any additional setup after loading the view.
         title = "Character"
         self.navigationItem.largeTitleDisplayMode = .automatic
-                
+          
+        /*
         let request = RMRequest(
             endPoint: .character,
             queryParameters: [
@@ -25,7 +26,27 @@ class RMCharacterViewController: UIViewController {
             ]
         )
         
-        print(request.url)
+        //print(request.url)
+        
+        RMService.shared.execute(request, expecting: RMCharacter.self) { result in
+            switch result {
+            case .success(let success):
+                break
+            case .failure(let failure):
+                print(String(describing: failure))
+            }
+        }
+        */
+        
+        RMService.shared.execute(.listCharactersRequest, expecting: RMGetAllCharacterResponse.self) { result in
+            switch result {
+            case .success(let model):
+                print(String(describing: model))
+                print(model.info.count)
+            case .failure(let error):
+                print(String(describing: error))
+            }
+        }
         
     }
     
