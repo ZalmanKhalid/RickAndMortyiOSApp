@@ -10,6 +10,7 @@ import UIKit
 
 protocol RMCharacterListViewViewModelDelagate: AnyObject {
     func didLoadInitialCharacter()
+    func didSelectCharacter(_ charater: RMCharacter)
 }
 
 final class RMCharacterListViewViewModel: NSObject {
@@ -62,11 +63,8 @@ extension RMCharacterListViewViewModel: UICollectionViewDataSource, UICollection
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: RMCharacterCollectionViewCell.cellIdentifier, for: indexPath) as? RMCharacterCollectionViewCell else {
             fatalError("unSupportedCell")
         }
-//        let imgUrl = URL(string: "https://rickandmortyapi.com/api/character/avatar/11.jpeg")
-//        let viewModel = RMCharacterCollectionViewCellViewModel( characterName: "zalman",
-//                                                                characterStatus: .alive,
-//                                                                characterImageUrl: imgUrl)
-        let viewModel = self.cellViewModels[indexPath.item]
+
+        let viewModel = self.cellViewModels[indexPath.row]
         cell.config(with: viewModel)
         return cell
     }
@@ -75,6 +73,12 @@ extension RMCharacterListViewViewModel: UICollectionViewDataSource, UICollection
         let bounds = UIScreen.main.bounds
         let width = (bounds.width-30)/2
         return CGSize(width: width, height: width*1.5)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        collectionView.deselectItem(at: indexPath, animated: true)
+        let character = characters[indexPath.row]
+        delegate?.didSelectCharacter(character)
     }
     
 }

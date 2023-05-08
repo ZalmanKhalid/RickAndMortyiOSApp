@@ -20,36 +20,18 @@ class RMCharacterViewController: UIViewController {
         self.navigationItem.largeTitleDisplayMode = .automatic
         
         self.view.addSubview(characterListView)
+        addConstraints()
+        characterListView.delegate = self
+    }
+    
+    fileprivate func addConstraints() {
         NSLayoutConstraint.activate([
             characterListView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             characterListView.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor),
             characterListView.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor),
             characterListView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
         ])
-          
-        /*
-        let request = RMRequest(
-            endPoint: .character,
-            queryParameters: [
-                URLQueryItem(name: "name", value: "rick"),
-                URLQueryItem(name: "status", value: "alive")
-            ]
-        )
-        
-        //print(request.url)
-        
-        RMService.shared.execute(request, expecting: RMCharacter.self) { result in
-            switch result {
-            case .success(let success):
-                break
-            case .failure(let failure):
-                print(String(describing: failure))
-            }
-        }
-        */
-        
     }
-    
 
     /*
     // MARK: - Navigation
@@ -61,4 +43,17 @@ class RMCharacterViewController: UIViewController {
     }
     */
 
+}
+
+extension RMCharacterViewController: RMCharacterListViewDelegate {
+    func rmCharacterListView(_ characterListView: RMCharacterListView, didSelectCharacter character: RMCharacter) {
+        // open detail controller for character
+        let viewModel = RMCharacterDetailViewViewModel(character: character)
+        let detailViewController = RMCharacterDetailViewController(viewModel: viewModel)
+        detailViewController.navigationItem.largeTitleDisplayMode = .never
+        navigationController?.pushViewController(detailViewController, animated: true)
+    }
+    
+    
+    
 }

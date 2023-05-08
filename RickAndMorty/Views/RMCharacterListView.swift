@@ -7,9 +7,14 @@
 
 import UIKit
 
+protocol RMCharacterListViewDelegate: AnyObject {
+    func rmCharacterListView(_ characterListView: RMCharacterListView, didSelectCharacter character: RMCharacter)
+}
+
 /// View that andels showing list of characters, loader, ets
 final class RMCharacterListView: UIView {
 
+    public weak var delegate: RMCharacterListViewDelegate?
     private let viewModel = RMCharacterListViewViewModel()
     
     private let spinner: UIActivityIndicatorView = {
@@ -72,6 +77,10 @@ final class RMCharacterListView: UIView {
 }
 
 extension RMCharacterListView: RMCharacterListViewViewModelDelagate {
+    func didSelectCharacter(_ charater: RMCharacter) {
+        delegate?.rmCharacterListView(self, didSelectCharacter: charater)
+    }
+    
     func didLoadInitialCharacter() {
         collectionView.reloadData()
         
