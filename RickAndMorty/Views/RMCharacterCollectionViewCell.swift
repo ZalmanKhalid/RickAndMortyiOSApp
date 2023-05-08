@@ -14,7 +14,8 @@ class RMCharacterCollectionViewCell: UICollectionViewCell {
     
     private let imageView: UIImageView = {
         let imageView = UIImageView()
-        imageView.contentMode = .scaleAspectFit
+        imageView.contentMode = .scaleAspectFill
+        imageView.clipsToBounds = true
         imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
     }()
@@ -40,24 +41,33 @@ class RMCharacterCollectionViewCell: UICollectionViewCell {
         contentView.backgroundColor = .secondarySystemBackground
         contentView.addSubviews(imageView, nameLbale, statusLbale)
         addConstraints()
+        setUpLayer()
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
+    fileprivate func setUpLayer() {
+        contentView.layer.cornerRadius = 8
+        contentView.layer.shadowColor = UIColor.label.cgColor
+        contentView.layer.shadowRadius = 4
+        contentView.layer.shadowOffset = CGSize(width: -3, height: 3)
+        contentView.layer.shadowOpacity = 0.25
+    }
+    
     private func addConstraints() {
         NSLayoutConstraint.activate([
-            statusLbale.heightAnchor.constraint(equalToConstant: 50),
-            nameLbale.heightAnchor.constraint(equalToConstant: 50),
+            statusLbale.heightAnchor.constraint(equalToConstant: 32),
+            nameLbale.heightAnchor.constraint(equalToConstant: 32),
             
-            statusLbale.leftAnchor.constraint(equalTo: contentView.leftAnchor, constant: 5),
-            statusLbale.rightAnchor.constraint(equalTo: contentView.rightAnchor, constant: -5),
-            nameLbale.leftAnchor.constraint(equalTo: contentView.leftAnchor, constant: 5),
-            nameLbale.rightAnchor.constraint(equalTo: contentView.rightAnchor, constant: -5),
+            statusLbale.leftAnchor.constraint(equalTo: contentView.leftAnchor, constant: 8),
+            statusLbale.rightAnchor.constraint(equalTo: contentView.rightAnchor, constant: -8),
+            nameLbale.leftAnchor.constraint(equalTo: contentView.leftAnchor, constant: 8),
+            nameLbale.rightAnchor.constraint(equalTo: contentView.rightAnchor, constant: -8),
             
             statusLbale.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -2),
-            nameLbale.bottomAnchor.constraint(equalTo: statusLbale.topAnchor, constant: -2),
+            nameLbale.bottomAnchor.constraint(equalTo: statusLbale.topAnchor),
             
             imageView.topAnchor.constraint(equalTo: contentView.topAnchor),
             imageView.leftAnchor.constraint(equalTo: contentView.leftAnchor),
@@ -68,7 +78,11 @@ class RMCharacterCollectionViewCell: UICollectionViewCell {
 //        imageView.backgroundColor = .systemYellow
 //        statusLbale.backgroundColor = .systemOrange
 //        nameLbale.backgroundColor = .systemRed
-        
+    }
+    
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+        setUpLayer()
     }
     
     override func prepareForReuse() {
