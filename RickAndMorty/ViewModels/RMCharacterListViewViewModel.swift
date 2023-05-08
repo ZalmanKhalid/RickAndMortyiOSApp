@@ -13,6 +13,7 @@ protocol RMCharacterListViewViewModelDelagate: AnyObject {
     func didSelectCharacter(_ charater: RMCharacter)
 }
 
+/// ViewModel to handle character list view logic
 final class RMCharacterListViewViewModel: NSObject {
     
     public weak var delegate: RMCharacterListViewViewModelDelagate?
@@ -31,13 +32,17 @@ final class RMCharacterListViewViewModel: NSObject {
     }
     
     private var cellViewModels: [RMCharacterCollectionViewCellViewModel] = []
+    private var apiInfo: RMGetAllCharacterResponse.Info?
     
+    /// Fecth Initial set of characters
     public func fectchCharacters(){
         RMService.shared.execute(.listCharactersRequest, expecting: RMGetAllCharacterResponse.self) { [weak self] result in
             switch result {
             case .success(let responseModel):
                 let results = responseModel.results
+                let info = responseModel.info
                 self?.characters = results
+                self?.apiInfo = info
                 DispatchQueue.main.async {
                     self?.delegate?.didLoadInitialCharacter()
                 }
@@ -49,6 +54,14 @@ final class RMCharacterListViewViewModel: NSObject {
         }
     }
     
+    /// paginate if addiotional characters are needed
+    public func fectchAddiotionalCharacters(){
+        // fetch characters here
+    }
+    
+    public var shouldShowLoadMoreIndicatore: Bool {
+        return self.apiInfo?.next != nil
+    }
 }
 
 // i personally like this following to be a part of controller 
