@@ -95,7 +95,7 @@ class RMCharacterCollectionViewCell: UICollectionViewCell {
     public func config(with viewModel: RMCharacterCollectionViewCellViewModel){
         self.nameLbale.text = viewModel.characterName
         self.statusLbale.text = viewModel.characterStatusText
-        viewModel.fetch { [weak self] result in
+        viewModel.fetchImage { [weak self] result in
             switch result {
             case .success(let data):
                 DispatchQueue.main.async {
