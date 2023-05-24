@@ -12,18 +12,29 @@ class RMCharacterDetailViewViewModel {
     
     private let character: RMCharacter
     
-    enum sectionTypes: CaseIterable {
-        case photo
-        case info
-        case episodes
+    enum SectionTypes {
+        case photo(viewModel: RMCharacterPhotoCollectionViewCellViewModel)
+        
+        case info(viewModel: [RMCharacterInfoCollectionViewCellViewModel])
+        
+        case episodes(viewModel: [RMCharacterEpisodesCollectionViewCellViewModel])
     }
     
-    public let sections = sectionTypes.allCases
+    public var sections: [SectionTypes] = []
     
     //MARK: - Init
     
     init(character: RMCharacter) {
         self.character = character
+        setupSections()
+    }
+    
+    private func setupSections() {
+        sections = [
+            .photo(viewModel: .init()),
+            .info(viewModel: [.init(),.init(),.init(),.init(),.init(),.init()]),
+            .episodes(viewModel: [.init(),.init(),.init(),.init(),.init()])
+        ]
     }
     
     private var requestUrl: URL? {
