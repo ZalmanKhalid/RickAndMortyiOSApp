@@ -13,7 +13,8 @@ class RMCharacterEpisodesCollectionViewCell: UICollectionViewCell {
     override init(frame: CGRect) {
         super.init(frame: frame)
         backgroundColor = .systemMint
-
+        contentView.layer.cornerRadius = 8
+        contentView.layer.masksToBounds = true
     }
     
     required init?(coder: NSCoder) {
@@ -29,7 +30,10 @@ class RMCharacterEpisodesCollectionViewCell: UICollectionViewCell {
     }
     
     public func configure(with viewModel: RMCharacterEpisodesCollectionViewCellViewModel) {
-        
+        viewModel.registerForData { data in
+            print(String(describing: data.name))
+        }
+        viewModel.fetchEpisode()
     }
     
 }
