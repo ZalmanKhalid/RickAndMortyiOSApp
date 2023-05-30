@@ -19,7 +19,7 @@ final class RMRequest {
     private struct constants {
         static let baseUrl = "https://rickandmortyapi.com/api"
     }
-    private let endPoint: RMEndpoint
+    let endPoint: RMEndpoint
     private let pathComponents: [String]
     private let queryParameters: [URLQueryItem]
     

@@ -20,6 +20,8 @@ final class RMService {
         case failedToGetData
     }
     
+    private let cacheManager = RMAPICacheManager()
+    
     /// privatetised constructor
     private init() {}
     
@@ -33,12 +35,26 @@ final class RMService {
         expecting type: T.Type,
         completion: @escaping (Result<T,Error>)->Void
     ) {
+        if let ChachedData = cacheManager.cachedResponse(
+            for: request.endPoint,
+            url: request.url) {
+            print("using cached api response")
+            do{
+                let result = try JSONDecoder().decode(type.self, from: ChachedData)
+                completion(.success(result))
+            }
+            catch{
+                completion(.failure(error))
+            }
+            return
+        }
+        
         guard let urlRequest = self.request(from: request) else {
             completion(.failure(RMServiceError.failedToCreateRequest))
             return
         }
         
-        let task = URLSession.shared.dataTask(with: urlRequest) { data, response, error in
+        let task = URLSession.shared.dataTask(with: urlRequest) { [weak self] data, response, error in
             guard let data, error == nil else {
                 completion(.failure(error ?? RMServiceError.failedToGetData))
                 return
@@ -50,6 +66,10 @@ final class RMService {
                 //print(String(describing: json))
                 let result = try JSONDecoder().decode(type.self, from: data)
                 completion(.success(result))
+                self?.cacheManager.setCache(
+                    for: request.endPoint,
+                    url: request.url,
+                    data: data)
             }
             catch{
                 completion(.failure(error))
