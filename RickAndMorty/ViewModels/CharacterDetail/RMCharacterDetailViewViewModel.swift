@@ -12,6 +12,10 @@ class RMCharacterDetailViewViewModel {
     
     private let character: RMCharacter
 
+    public var episeodes: [String] {
+        character.episode
+    }
+    
     enum SectionTypes {
         case photo(viewModel: RMCharacterPhotoCollectionViewCellViewModel)
         
