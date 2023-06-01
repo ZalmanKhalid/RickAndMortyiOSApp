@@ -10,23 +10,51 @@ import UIKit
 /// controller to and sreach for episode
 class RMEpisodeViewController: UIViewController {
 
+    private let episodeListView = RMEpisodeListView()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
         title = "Episode"
         self.navigationItem.largeTitleDisplayMode = .automatic
+        
+        self.view.addSubview(episodeListView)
+        addConstraints()
+        episodeListView.delegate = self
     }
     
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
+    fileprivate func addConstraints() {
+        NSLayoutConstraint.activate([
+            episodeListView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            episodeListView.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor),
+            episodeListView.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor),
+            episodeListView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
+        ])
     }
-    */
 
+
+}
+
+extension RMEpisodeViewController: RMEpisodeListViewDelegate {
+    func rmEpisodeListView(_ characterListView: RMEpisodeListView, didSelectEpisode episode: RMEpisode) {
+        // open detail controller for episode
+        //let viewModel = RMEpisodeDetailViewViewModel(endpointUrl: URL(string: episode.url))
+        let detailViewController = RMEpiseodeDetailViewController(url: URL(string: episode.url))
+        detailViewController.navigationItem.largeTitleDisplayMode = .never
+        navigationController?.pushViewController(detailViewController, animated: true)
+    }
+    
+    
+    
+    func rmCharacterListView(_ characterListView: RMCharacterListView, didSelectCharacter character: RMCharacter) {
+        // open detail controller for character
+        let viewModel = RMCharacterDetailViewViewModel(character: character)
+        let detailViewController = RMCharacterDetailViewController(viewModel: viewModel)
+        detailViewController.navigationItem.largeTitleDisplayMode = .never
+        navigationController?.pushViewController(detailViewController, animated: true)
+    }
+    
+    
+    
 }
