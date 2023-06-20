@@ -22,6 +22,16 @@ class RMEpisodeViewController: UIViewController {
         self.view.addSubview(episodeListView)
         addConstraints()
         episodeListView.delegate = self
+        addSearchButton()
+    }
+    
+    private func addSearchButton() {
+        
+        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .search, target: self, action: #selector(didTapSearch))
+    }
+    
+    @objc private func didTapSearch() {
+        
     }
     
     fileprivate func addConstraints() {
@@ -47,13 +57,13 @@ extension RMEpisodeViewController: RMEpisodeListViewDelegate {
     
     
     
-    func rmCharacterListView(_ characterListView: RMCharacterListView, didSelectCharacter character: RMCharacter) {
-        // open detail controller for character
-        let viewModel = RMCharacterDetailViewViewModel(character: character)
-        let detailViewController = RMCharacterDetailViewController(viewModel: viewModel)
-        detailViewController.navigationItem.largeTitleDisplayMode = .never
-        navigationController?.pushViewController(detailViewController, animated: true)
-    }
+//    func rmCharacterListView(_ characterListView: RMCharacterListView, didSelectCharacter character: RMCharacter) {
+//        // open detail controller for character
+//        let viewModel = RMCharacterDetailViewViewModel(character: character)
+//        let detailViewController = RMCharacterDetailViewController(viewModel: viewModel)
+//        detailViewController.navigationItem.largeTitleDisplayMode = .never
+//        navigationController?.pushViewController(detailViewController, animated: true)
+//    }
     
     
     

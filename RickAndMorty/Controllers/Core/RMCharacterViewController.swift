@@ -22,6 +22,18 @@ class RMCharacterViewController: UIViewController {
         self.view.addSubview(characterListView)
         addConstraints()
         characterListView.delegate = self
+        addSearchButton()
+    }
+    
+    private func addSearchButton() {
+        
+        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .search, target: self, action: #selector(didTapSearch))
+    }
+    
+    @objc private func didTapSearch() {
+        let vc = RMSearchViewController(config: RMSearchViewController.Config(type: .character))
+        vc.navigationItem.largeTitleDisplayMode = .never
+        navigationController?.pushViewController(vc, animated: true)
     }
     
     fileprivate func addConstraints() {

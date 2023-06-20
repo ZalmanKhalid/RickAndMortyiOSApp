@@ -31,13 +31,16 @@ class RMCharacterEpisodesCollectionViewCell: UICollectionViewCell {
         return label
     }()
     
+    fileprivate func setUPLayer() {
+        contentView.layer.cornerRadius = 8
+        contentView.layer.borderWidth = 2
+        contentView.layer.masksToBounds = true
+    }
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         backgroundColor = .tertiarySystemBackground
-        contentView.layer.cornerRadius = 8
-        contentView.layer.borderWidth = 2
-        contentView.layer.borderColor = UIColor.systemMint.cgColor
-        contentView.layer.masksToBounds = true
+        setUPLayer()
         contentView.addSubviews(seasonLabel, nameLabel, airDateLabel)
         setupConstraints()
     }
@@ -78,6 +81,7 @@ class RMCharacterEpisodesCollectionViewCell: UICollectionViewCell {
             self?.nameLabel.text = data.name
             self?.airDateLabel.text = "Aired on "+data.air_date
             //print(String(describing: data.name))
+            self?.contentView.layer.borderColor = viewModel.borderColor.cgColor
         }
         viewModel.fetchEpisode()
     }
